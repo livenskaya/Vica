@@ -1,0 +1,23 @@
+;(function () {
+  var scripts = document.getElementsByTagName('script');
+  for (var i = 0; i < scripts.length; i++) {
+    var src = scripts[i].getAttribute('src');
+    if (!src) continue;
+
+    var match = (/(t\.gdeslon\.ru|gdeslon\.ru|gdeslon\.localhost)(:\d+)?\/landing.js/i).exec(src);
+    if (match) {
+      var host = match[1];
+      var port = match[2];
+      var parts = src.split('?');
+      var params = parts.length > 1 ? parts.pop() : null
+    }
+  }
+  if (host === 'gdeslon.ru') host = 'www.' + host;
+  port = host === 'gdeslon.localhost' ? ':9000' : '';
+  var query = '?source=' + encodeURIComponent(window.location.href);
+  if (params) query += '&' + params;
+
+  var script = document.createElement('script');
+  script.src = location.protocol + '//' + host + port + '/landing-backend.js' + query;
+  document.head.appendChild(script);
+})();
